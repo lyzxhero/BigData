@@ -2,6 +2,14 @@ package com.lyzx.soark.streaming
 
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming.kafka010.{HasOffsetRanges, KafkaUtils, OffsetRange}
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferBrokers
+import org.apache.spark.streaming.kafka010.ConsumerStrategies.Assign
+
+
+import scala.collection.mutable
 
 
 class ManageOffsetHandler {
@@ -29,23 +37,23 @@ object ManageOffsetHandler{
     val fromOffsets = new mutable.HashMap[TopicPartition,Long]()
 
 
-    val line = KafkaUtils.createDirectStream[String, String](ssc,
-          PreferConsistent,
-          Assign[String, String](fromOffsets.keys.toList, kafkaParams, fromOffsets)
-        )
-
-    line.foreachRDD(rdd=>{
-      val offsetRange:Array[OffsetRange] = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
-
-      val vv:OffsetRange = null;
-
-      rdd.foreachPartition(itr=>{
-
-        itr.foreach(item=>print(item.value()))
-
-
-      })
-    })
+//    val line = KafkaUtils.createDirectStream[String, String](ssc,
+//          PreferConsistent,
+//          Assign[String, String](fromOffsets.keys.toList, kafkaParams, fromOffsets)
+//        )
+//
+//    line.foreachRDD(rdd=>{
+//      val offsetRange:Array[OffsetRange] = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+//
+//      val vv:OffsetRange = null;
+//
+//      rdd.foreachPartition(itr=>{
+//
+//        itr.foreach(item=>print(item.value()))
+//
+//
+//      })
+//    })
 
   }
 }

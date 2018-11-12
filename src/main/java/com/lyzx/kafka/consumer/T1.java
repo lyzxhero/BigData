@@ -17,7 +17,7 @@ public class T1 {
 
 
     @Test
-    public void test1() throws IOException {
+    public void test1() throws IOException{
         Properties props = new Properties();
         props.put("bootstrap.servers",ips);
         props.put("group.id", "vdf");
@@ -29,14 +29,15 @@ public class T1 {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Arrays.asList("front-event"));
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/x3.txt"));
+        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/x9.txt"));
 
         while(true){
-            System.out.println("---");
-            ConsumerRecords<String, String> records = consumer.poll(300);
-            System.out.println("====");
+            ConsumerRecords<String, String> records = consumer.poll(3000);
             for(ConsumerRecord<String, String> record : records){
-                System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
+                String line = record.value();
+                bw.write(line);
+                bw.newLine();
+                System.out.println(line);
             }
         }
     }
