@@ -22,4 +22,8 @@ public class G {
         String s2 = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
         System.out.println(s2);
     }
+
+    public static void main(String[] args) {
+
+    }
 }
