@@ -6,18 +6,14 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.junit.Test;
-<<<<<<< HEAD
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Properties;
-=======
-import java.io.*;
 import java.util.*;
 
 
->>>>>>> 8ff93d3354cf430b320c6db68ff1839ec7a94bf3
 
 public class T1 {
     private static final String ips = "172.16.124.92:9092,172.16.124.93:9092,172.16.124.94:9092";
@@ -47,8 +43,6 @@ public class T1 {
                 bw.newLine();
                 System.out.println(line);
             }
-<<<<<<< HEAD
-=======
         }
     }
 
@@ -82,7 +76,6 @@ public class T1 {
                 long newOffset = partitionRecords.get(partitionRecords.size() - 1).offset() + 1;
                 consumer.commitSync(Collections.singletonMap(tp,new OffsetAndMetadata(newOffset)));
             }
->>>>>>> 8ff93d3354cf430b320c6db68ff1839ec7a94bf3
         }
     }
 
