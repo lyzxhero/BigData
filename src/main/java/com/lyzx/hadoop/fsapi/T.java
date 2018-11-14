@@ -18,7 +18,7 @@ public class T {
         try {
             Configuration conf = new Configuration();
             conf.setBoolean("dfs.support.append", true);
-            fileSystem = FileSystem.get(new URI("hdfs://192.168.56.104:9000"),conf,"root");
+            fileSystem = FileSystem.get(new URI("hdfs://cdh-master1:8020"),conf,"root");
         }catch(Exception ex){
             System.out.println("Error occurred while configuring FileSystem");
         }
