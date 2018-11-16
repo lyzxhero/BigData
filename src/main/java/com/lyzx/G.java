@@ -3,6 +3,7 @@ package com.lyzx;
 import org.junit.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class G {
@@ -24,6 +25,9 @@ public class G {
     }
 
     public static void main(String[] args) {
-
+        long timeStamp = 1541993382921L;
+        LocalDateTime yesterday = LocalDateTime.ofEpochSecond(timeStamp/1000,0, ZoneOffset.ofHours(8));
+        String v = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println(v);
     }
 }

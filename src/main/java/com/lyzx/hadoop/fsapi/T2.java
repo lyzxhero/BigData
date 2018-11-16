@@ -29,22 +29,25 @@ public class T2 {
 
     public static void main(String[] args) throws IOException{
         long start = System.currentTimeMillis();
-        long day7 = 1541520000000L;
-        long day8 = 1541606400000L;
+        long day7 = 1542297600000L;
+//        long day8 = 1542038399000L;
 
-        BufferedReader br = new BufferedReader(new FileReader("/Users/xiang/Downloads/var/x2.txt"));
-        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/part-00008",true));
+        BufferedReader br = new BufferedReader(new FileReader("/Users/xiang/Downloads/part-00002"));
+        BufferedWriter bw15 = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/15",true));
+        BufferedWriter bw16 = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/16",true));
 
         int i = 0;
         String line = null;
         while((line = br.readLine()) != null){
             String time = line.substring(8,21);
-
             try{
                 long now = Long.parseLong(time);
-                if(now >= day7 && now < day8){
-                    bw.write(line);
-                    bw.newLine();
+                if(now <= day7){
+                    bw15.write(line);
+                    bw15.newLine();
+                }else{
+                    bw16.write(line);
+                    bw16.newLine();
                 }
                 i++;
             }catch (Exception e){
@@ -52,9 +55,9 @@ public class T2 {
             }
         }
         br.close();
-        bw.close();
+        bw15.close();
+        bw16.close();
         System.out.println("line Count="+i);
-
 
         long end = System.currentTimeMillis();
         System.out.println("=====>"+(end-start));
