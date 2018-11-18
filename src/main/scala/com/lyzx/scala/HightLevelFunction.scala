@@ -24,7 +24,5 @@ object HightLevelFunction{
     val t = new HightLevelFunction
       val v= t.f1(t.add,100,200)
         println(v)
-
-
   }
 }
