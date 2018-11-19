@@ -16,15 +16,15 @@ import java.util.*;
 
 
 public class T1 {
-    private static final String ips = "172.16.124.92:9092,172.16.124.93:9092,172.16.124.94:9092";
+    private static final String ips = "172.16.124.70:9092,172.16.124.71:9092,172.16.124.72:9092";
     private static final String ips2 = "192.168.21.32:9092";
 
 
     @Test
-    public void test1() throws IOException{
+    public void test1() throws Exception{
         Properties props = new Properties();
-        props.put("bootstrap.servers",ips);
-        props.put("group.id", "vdf");
+        props.put("bootstrap.servers",ips2);
+        props.put("group.id","vdf");
         props.put("auto.offset.reset","earliest");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
@@ -33,17 +33,19 @@ public class T1 {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Arrays.asList("front-event"));
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/x9.txt"));
-
+//        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/x9.txt"));
         while(true){
             ConsumerRecords<String, String> records = consumer.poll(3000);
             for(ConsumerRecord<String, String> record : records){
                 String line = record.value();
-                bw.write(line);
-                bw.newLine();
-                System.out.println(line);
+                String r = record.offset()+"======"+record.partition()+"===="+line;
+//                bw.write(r);
+//                bw.newLine();
+                System.out.println(r);
             }
         }
+
+
     }
 
 
