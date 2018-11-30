@@ -58,7 +58,7 @@ public class T1 {
     public static void main(String[] args) throws IOException{
         long start = System.currentTimeMillis();
         T1 example = new T1();
-        FileSystem fs = example.configureFileSystem();
+//        FileSystem fs = example.configureFileSystem();
 
 //        fs.createNewFile(new Path("/front-event/2018/11/07/20181107"));
 //        fs.close();

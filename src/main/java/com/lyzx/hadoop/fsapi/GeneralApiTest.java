@@ -20,7 +20,7 @@ public class GeneralApiTest {
     static{
         Configuration conf = new Configuration();
         try {
-            fs = FileSystem.get(new URI("hdfs://192.168.56.104:9000"),conf,"root");
+            fs = FileSystem.get(new URI("hdfs://cdh-master1:8082"),conf,"root");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -37,7 +37,7 @@ public class GeneralApiTest {
      * @throws InterruptedException
      */
     @Test
-    public void test1() throws URISyntaxException, IOException, InterruptedException {
+    public void test1() throws URISyntaxException, IOException, InterruptedException{
         boolean b = fs.mkdirs(new Path("/front-event/today"));
         System.out.printf("b="+b);
     }
@@ -56,14 +56,8 @@ public class GeneralApiTest {
 
     @Test
     public void test3() throws IOException {
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        list.add("5");
-
-        String s = String.join(",", list);
-        System.out.printf("s="+s);
+        fs.createNewFile(new Path("/user/liyaohui/1.txt"));
     }
+
+
 }

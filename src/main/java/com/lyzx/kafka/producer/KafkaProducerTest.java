@@ -22,7 +22,7 @@ public class KafkaProducerTest {
     public void producer1() throws ExecutionException, InterruptedException {
 
         Properties props = new Properties();
-        props.put("bootstrap.servers",ips1);
+        props.put("bootstrap.servers",ips2);
         props.put("acks","all");
         props.put("retries",0);
         props.put("batch.size",16384);
@@ -32,8 +32,8 @@ public class KafkaProducerTest {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         Producer<String,String> producer = new KafkaProducer<>(props);
-        for (int i = 700; i <800; i++){
-            Future<RecordMetadata> f = producer.send(new ProducerRecord<>("front-event", Integer.toString(i), Integer.toString(i)));
+        for (int i = 700; i <802; i++){
+            Future<RecordMetadata> f = producer.send(new ProducerRecord<>("topic_test", Integer.toString(i), Integer.toString(i)));
             System.out.println(f.get());
         }
         producer.close();

@@ -23,25 +23,23 @@ public class T1 {
     @Test
     public void test1() throws Exception{
         Properties props = new Properties();
-        props.put("bootstrap.servers",ips2);
-        props.put("group.id","vdf");
-        props.put("auto.offset.reset","earliest");
+        props.put("bootstrap.servers",ips);
+        props.put("group.id","vdf2222dede1");
+//        props.put("auto.offset.reset","earliest");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList("front-event"));
+        consumer.subscribe(Arrays.asList("topic_test"));
 
-//        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/x9.txt"));
+
         while(true){
             ConsumerRecords<String, String> records = consumer.poll(3000);
             for(ConsumerRecord<String, String> record : records){
                 String line = record.value();
-                String r = record.offset()+"======"+record.partition()+"===="+line;
-//                bw.write(r);
-//                bw.newLine();
-                System.out.println(r);
+                String r1 = record.offset()+"======"+record.partition()+"===="+line;
+                System.out.println(r1);
             }
         }
 
