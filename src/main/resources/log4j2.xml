@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" strict="true"
+               name="XMLConfigTest" packages="org.apache.logging.log4j.test">
+    <Properties>
+        <Property name="front-event">/home/prod/workspace-liyaohui/flume/log</Property>
+        <Property name="front-event-data">/home/prod/workspace-liyaohui/flume/log</Property>
+        <Property name="front-event-data-test">/home/prod/workspace-liyaohui/flume/log</Property>
+    </Properties>
+    <Filter type="ThresholdFilter" level="ALL" />
+
+    <Appenders>
+        <Appender type="Console" name="SYSTEM_OUT">
+            <Layout type="PatternLayout">
+                <Pattern>[front-event-console] %-d{HH:mm:ss SSS} %5p (%c:%L) - %m%n</Pattern>
+            </Layout>
+        </Appender>
+
+        <Appender type="RollingFile" name="front-event" fileName="${front-event}/front-event.log"
+                  filePattern="${front-event}/front-event-%d{yyyy-MM-dd}_%d{yyyyMMddHHmmss}.log">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500KB"></SizeBasedTriggeringPolicy>
+                <DefaultRolloverStrategy>200</DefaultRolloverStrategy>
+            </Policies>
+        </Appender>
+
+        <Appender type="RollingFile" name="front-event-data" fileName="${front-event-data}/front-event-data.log"
+                  filePattern="${front-event-data}/front-event-data-%d{yyyy-MM-dd}_%d{yyyyMMddHHmmss}.log">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500KB"></SizeBasedTriggeringPolicy>
+                <DefaultRolloverStrategy>200</DefaultRolloverStrategy>
+                <!--
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <DefaultRolloverStrategy max="60"/>
+                -->
+            </Policies>
+        </Appender>
+
+        <Appender type="RollingFile" name="front-event-data-test" fileName="${front-event-data-test}/front-event-data-test.log"
+                  filePattern="${front-event-data-test}/front-event-data-test-%d{yyyy-MM-dd}_%d{yyyyMMddHHmmss}.log">
+            <!--
+            <Layout type="PatternLayout">
+                <Pattern>[front-event-test] %d{HH:mm:ss SSS} %5p (%c:%L) - %m%n</Pattern>
+            </Layout>
+            -->
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500KB"></SizeBasedTriggeringPolicy>
+                <DefaultRolloverStrategy>200</DefaultRolloverStrategy>
+
+                <!--
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <DefaultRolloverStrategy max="60"/>-->
+            </Policies>
+        </Appender>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.jufan.worker.EventProcessor" level="info" additivity="false">
+            <AppenderRef ref="front-event" />
+        </Logger>
+        <Logger name="com.jufan.worker.EventProcessor.data" level="info" additivity="false">
+            <AppenderRef ref="front-event-data" />
+        </Logger>
+        <Logger name="com.jufan.worker.EventProcessor.data.test" level="info" additivity="false">
+            <AppenderRef ref="front-event-data-test" />
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="front-event" />
+            <AppenderRef ref="SYSTEM_OUT"/>
+        </Root>
+    </Loggers>
+</Configuration>
