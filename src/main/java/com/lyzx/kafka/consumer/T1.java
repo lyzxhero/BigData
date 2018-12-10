@@ -24,14 +24,14 @@ public class T1 {
     public void test1() throws Exception{
         Properties props = new Properties();
         props.put("bootstrap.servers",ips);
-        props.put("group.id","vdf2222dede1");
+        props.put("group.id","ff");
 //        props.put("auto.offset.reset","earliest");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList("topic_test"));
+        consumer.subscribe(Arrays.asList("front-event"));
 
 
         while(true){

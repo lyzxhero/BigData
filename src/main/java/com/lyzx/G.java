@@ -1,7 +1,9 @@
 package com.lyzx;
 
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
+import java.io.*;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -33,7 +35,7 @@ public class G {
         String ipString = "";
         Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface.getNetworkInterfaces();
         InetAddress ip = null;
-        while (allNetInterfaces.hasMoreElements()) {
+        while (allNetInterfaces.hasMoreElements()){
             NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
             Enumeration<InetAddress> addresses = netInterface.getInetAddresses();
             while (addresses.hasMoreElements()) {
@@ -47,12 +49,38 @@ public class G {
         return ipString;
     }
 
-    public static void main(String[] args) throws Exception {
 
-        System.out.println(getLocalIp());
-//        long timeStamp = 1541993382921L;
-//        LocalDateTime yesterday = LocalDateTime.ofEpochSecond(timeStamp/1000,0, ZoneOffset.ofHours(8));
-//        String v = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//        System.out.println(v);
+    public static void dataClear(){
+        try{
+            BufferedReader br = new BufferedReader(new FileReader("/Users/xiang/Downloads/20181208235005"));
+//            BufferedWriter good = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/good",true));
+            BufferedWriter error = new BufferedWriter(new FileWriter("/Users/xiang/Downloads/error",true));
+
+
+            String line;
+            while((line = br.readLine()) != null){
+                try{
+                    JSONObject.parseObject(line);
+//                    good.write(line);
+//                    good.newLine();
+                }catch(Exception e){
+                    e.printStackTrace();
+                    error.write(line);
+                    error.newLine();
+                }
+            }
+
+            br.close();
+//            good.close();
+            error.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        dataClear();
+
     }
 }
