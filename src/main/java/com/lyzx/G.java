@@ -7,11 +7,17 @@ import java.io.*;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class G {
 
@@ -80,7 +86,38 @@ public class G {
 
 
     public static void main(String[] args) throws Exception {
-        dataClear();
+//        ScheduledExecutorService p = Executors.newScheduledThreadPool(1);
+//        p.scheduleAtFixedRate(new R(),10,5, TimeUnit.SECONDS);
 
+//        Calendar c= Calendar.getInstance();//
+//        c.add(Calendar.DAY_OF_MONTH,1);
+//        long time = c.getTime().getTime();
+//        System.out.println(time);
+
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        String now = s.format(new Date());
+
+        int year = tomorrow.getYear();
+        int monthValue = tomorrow.getMonthValue();
+        int dayOfMonth = tomorrow.getDayOfMonth();
+
+        long tomorrowTime = s.parse("2018-12-11 00:00:00").getTime();
+        long nowTime = new Date().getTime();
+
+        System.out.println(tomorrowTime-nowTime);
+
+
+    }
+}
+
+
+class R implements Runnable{
+
+    @Override
+    public void run() {
+        String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("dateTime:"+dateTime);
     }
 }
