@@ -17,33 +17,34 @@ import java.util.*;
 
 public class T1 {
     private static final String ips = "172.16.124.70:9092,172.16.124.71:9092,172.16.124.72:9092";
-    private static final String ips2 = "192.168.21.32:9092";
+    private static final String ips2 = "metal3:9092";
+//    private static final String ips3 = "cdh-worker001:9092,cdh-worker002:9092,cdh-worker003:9092";
+
+//    private final String topicName = "joinDemo2";
+    private final String topicName2 = "front-event-local";
 
 
     @Test
     public void test1() throws Exception{
         Properties props = new Properties();
-        props.put("bootstrap.servers",ips);
-        props.put("group.id","ff");
-//        props.put("auto.offset.reset","earliest");
+        props.put("bootstrap.servers",ips2);
+        props.put("group.id","hero_local1");
+        props.put("auto.offset.reset","earliest");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList("front-event"));
-
+        consumer.subscribe(Arrays.asList(topicName2));
 
         while(true){
-            ConsumerRecords<String, String> records = consumer.poll(3000);
+            ConsumerRecords<String, String> records = consumer.poll(500);
             for(ConsumerRecord<String, String> record : records){
                 String line = record.value();
                 String r1 = record.offset()+"======"+record.partition()+"===="+line;
                 System.out.println(r1);
             }
         }
-
-
     }
 
 
