@@ -1,12 +1,11 @@
 package com.lyzx.hive;
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Stack;
-import java.util.TreeSet;
+import java.util.*;
 import org.apache.hadoop.hive.ql.lib.DefaultGraphWalker;
 import org.apache.hadoop.hive.ql.lib.DefaultRuleDispatcher;
 import org.apache.hadoop.hive.ql.lib.Dispatcher;
@@ -28,6 +27,10 @@ import org.apache.hadoop.hive.ql.parse.SemanticException;
  *
  */
 public class HiveParse1 implements NodeProcessor {
+    private static final HiveParse1 parser = new HiveParse1();
+
+    private HiveParse1(){}
+
     /**
      * Stores input tables in sql.
      */
@@ -117,13 +120,41 @@ public class HiveParse1 implements NodeProcessor {
         ogw.startWalking(topNodes, null);
     }
 
+    public void clearResult(){
+        inputTableList.clear();
+        OutputTableList.clear();
+    }
+
+
     public static void main(String[] args) throws IOException, ParseException,SemanticException {
 //        String query = "create table bi_report.temp_t_day_asset_apply_merchant_002_ as SELECT concat(c.cert_number,c.dim_apply_date_id ) as id,c.cert_number,c.contract_number,c.dim_apply_date_id as apply_date   FROM (select   cert_number,max(apply_time) as apply_time FROM   bi_dm.fact_risk_credit_apply where  ts='111' and dim_apply_date_id>='' and audit_status_name   ='拒绝' GROUP BY cert_number ) t  INNER JOIN  (select cert_number ,contract_number,dim_apply_date_id,apply_time from bi_dm.fact_risk_credit_apply where ts='123') c ON c.cert_number =t.cert_number AND t.apply_time=c.apply_time";
-        String query="insert overwrite table bi_report.t_day_asset_apply_merchant partition (ts='ts') select md5(concat_ws('_',risk.report_date,risk.sub_merchant_number))  as id,risk.report_date  as report_date,risk.sub_merchant_name      as    merchant_name_sub,risk.sub_merchant_number\tas    merchant_code_sub\t,risk.merchant_name as merchant_name,risk.merchant_code as merchant_code,risk.risk_apply_amount as risk_apply_amount,risk.risk_approve_amount    as    risk_approve_amount,risk.risk_refuse_amount     as    risk_refuse_amount,risk.risk_auditing_amount   as    risk_auditing_amount,risk.risk_apply_quantity\tas\t  risk_apply_quantity,risk.risk_approve_quantity\tas    risk_approve_quantity,risk.risk_refuse_quantity\tas    risk_refuse_quantity,risk.risk_auditing_quantity\tas    risk_auditing_quantity,nvl(asset.asset_apply_amount,0)\tas    asset_apply_amount,nvl(asset.asset_approve_amount,0)\tas    asset_approve_amount,nvl(asset.asset_refuse_amount,0)\tas    asset_refuse_amount,nvl(asset.asset_auditing_amount,0) as    asset_auditing_amount,nvl(asset.asset_apply_quantity,0)\tas    asset_apply_quantity,  nvl(asset.asset_approve_quantity,0) as   asset_approve_quantity,nvl(asset.asset_refuse_quantity,0)\t as   asset_refuse_quantity,nvl(asset.asset_auditing_quantity,0) as  asset_auditing_quantity,nvl(asset.traded_quantity,0) as   traded_quantity,nvl(asset.traded_amount,0)\tas   traded_amount,nvl(asset.create_time,current_timestamp())  as create_time,nvl(asset.update_time,current_timestamp())  as update_time, nvl(asset.creator_name,'LIKE')          as creator_name,nvl(asset.updater_name,'LIKE')          as updater_name from bi_report.temp_t_day_asset_apply_merchant_004_   risk left join bi_report.temp_t_day_asset_apply_merchant_005_ asset  on    risk.report_date=asset.report_date   and risk.sub_merchant_number=asset.sub_merchant_number";
+        String query;//"insert overwrite table bi_report.t_day_asset_apply_merchant partition (ts='ts') select md5(concat_ws('_',risk.report_date,risk.sub_merchant_number))  as id,risk.report_date  as report_date,risk.sub_merchant_name      as    merchant_name_sub,risk.sub_merchant_number\tas    merchant_code_sub\t,risk.merchant_name as merchant_name,risk.merchant_code as merchant_code,risk.risk_apply_amount as risk_apply_amount,risk.risk_approve_amount    as    risk_approve_amount,risk.risk_refuse_amount     as    risk_refuse_amount,risk.risk_auditing_amount   as    risk_auditing_amount,risk.risk_apply_quantity\tas\t  risk_apply_quantity,risk.risk_approve_quantity\tas    risk_approve_quantity,risk.risk_refuse_quantity\tas    risk_refuse_quantity,risk.risk_auditing_quantity\tas    risk_auditing_quantity,nvl(asset.asset_apply_amount,0)\tas    asset_apply_amount,nvl(asset.asset_approve_amount,0)\tas    asset_approve_amount,nvl(asset.asset_refuse_amount,0)\tas    asset_refuse_amount,nvl(asset.asset_auditing_amount,0) as    asset_auditing_amount,nvl(asset.asset_apply_quantity,0)\tas    asset_apply_quantity,  nvl(asset.asset_approve_quantity,0) as   asset_approve_quantity,nvl(asset.asset_refuse_quantity,0)\t as   asset_refuse_quantity,nvl(asset.asset_auditing_quantity,0) as  asset_auditing_quantity,nvl(asset.traded_quantity,0) as   traded_quantity,nvl(asset.traded_amount,0)\tas   traded_amount,nvl(asset.create_time,current_timestamp())  as create_time,nvl(asset.update_time,current_timestamp())  as update_time, nvl(asset.creator_name,'LIKE')          as creator_name,nvl(asset.updater_name,'LIKE')          as updater_name from bi_report.temp_t_day_asset_apply_merchant_004_   risk left join bi_report.temp_t_day_asset_apply_merchant_005_ asset  on    risk.report_date=asset.report_date   and risk.sub_merchant_number=asset.sub_merchant_number";
 
-        HiveParse1 lep = new HiveParse1();
-        lep.getLineageInfo(query);
-        System.out.println("Input tables = " + lep.getInputTableList());
-        System.out.println("Output tables = " + lep.getOutputTableList());
+
+        String sql = "/Users/xiang/Desktop/test.sql";
+        try(BufferedReader reader = new BufferedReader(new FileReader(sql))){
+            while(null != (query = reader.readLine())){
+                parser.getLineageInfo(query);
+                System.out.println("Input tables = " + parser.getInputTableList());
+                System.out.println("Output tables = " + parser.getOutputTableList());
+                parser.clearResult();
+
+                System.out.println();
+                System.out.println();
+                System.out.println();
+                System.out.println();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
+
+
+    public static Map<String, Set<String>> parse(File hql){
+
+
+
+        return null;
+    }
+
 }

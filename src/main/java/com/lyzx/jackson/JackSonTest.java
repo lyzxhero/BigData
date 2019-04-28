@@ -106,8 +106,7 @@ public class JackSonTest {
         String k = "{\"name\":\"耀辉\",\"age\":33,\"weight\":8.0,\"height\":99.0}";
 
         try {
-            Object o = mapper.readValue(k, new TypeReference<Data3>() {
-            });
+            Object o = mapper.readValue(k, new TypeReference<Data3>() {});
             System.out.println(o);
         } catch (IOException e) {
             e.printStackTrace();
